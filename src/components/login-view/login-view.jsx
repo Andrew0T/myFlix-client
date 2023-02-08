@@ -16,10 +16,10 @@ export const LoginView = ({ onLoggedIn }) => {
 
     fetch("https://myflixdb-202302.herokuapp.com/users", {
       method: "POST",
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(data)
     })
       .then((response) => response.json())
       .then((data) => {
@@ -33,6 +33,7 @@ export const LoginView = ({ onLoggedIn }) => {
       .catch((e) => {
         alert("Something went wrong.");
       });
+    }; 
 
     return (
      <form onSubmit={handleSubmit}>
@@ -58,4 +59,4 @@ export const LoginView = ({ onLoggedIn }) => {
      </form>
     );
   };
-};
+  
