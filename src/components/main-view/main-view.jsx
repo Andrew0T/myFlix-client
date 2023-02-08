@@ -51,6 +51,13 @@ export const MainView = () => {
     }
 
     return (
+      <MovieCard
+       key={movies._id}
+        movie={movies}
+        onMovieClick={(movie) => { 
+          setSelectedMovie(movie);
+          }}
+      />,
       <button onClick={() => {
         setUser(null);
         setToken(null);
