@@ -1,12 +1,13 @@
-import { useState} from "react";
+import React from "react";
+import { useState } from "react";
 
 export const SignupView = () => {
+  
   const [username, setUsername] = useState ("");
   const [password, setPassword] = useState ("");
   const [email, setEmail] = useState ("");
   const [birthday, setBirthday] = useState ("");
-
-
+  
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -42,7 +43,7 @@ export const SignupView = () => {
         value={username}
         onChange={(e) => setUsername (e.target.value)}
         required
-        minLength="3"
+        minLength="6"
         />
       </label>
       <label>
@@ -52,7 +53,7 @@ export const SignupView = () => {
         value={password}
         onChange={(e) => setPassword (e.target.value)}
         required
-        minLength="4"/>
+        minLength="6"/>
         </label>
         <label>
           <input
