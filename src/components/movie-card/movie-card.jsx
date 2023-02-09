@@ -31,5 +31,5 @@ MovieCard.propTypes = {
       Death: PropTypes.string.isRequired
     }).isRequired
   }).isRequired,
-  onBookClick: PropTypes.func.isRequired
+  onMovieClick: PropTypes.func.isRequired
 };
