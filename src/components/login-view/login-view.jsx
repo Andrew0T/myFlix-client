@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 
 export const LoginView = ({ onLoggedIn }) => {
@@ -13,7 +14,7 @@ export const LoginView = ({ onLoggedIn }) => {
       Password: password
     };
 
-    fetch("https://myflixdb-202302.herokuapp.com/login", {
+    fetch("https://myflixdb-202302.herokuapp.com/login?", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -24,6 +25,8 @@ export const LoginView = ({ onLoggedIn }) => {
       .then((data) => {
         console.log("Login response: ", data);
         if (data.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+          localStorage.setItem("token", data.token);
           onLoggedIn(data.user, data.token);
         } else {
           alert("No such user");
