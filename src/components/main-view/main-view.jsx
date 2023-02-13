@@ -2,6 +2,13 @@ import React from "react";
 import { useState } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
+<<<<<<< Updated upstream
+=======
+import { LoginView } from "../login-view/login-view";
+import { SignupView } from "../signup-view/signup-view";
+import { Row, Col, Container } from "react-bootstrap";
+
+>>>>>>> Stashed changes
 
 export const MainView = () => {
   const [movies, setMovies] = useState([
@@ -57,6 +64,7 @@ export const MainView = () => {
     }
 
     return (
+<<<<<<< Updated upstream
       <div>
         {movies.map((movie) => (
           <MovieCard
@@ -69,4 +77,30 @@ export const MainView = () => {
         ))}
       </div>
     );
+=======
+      <Container>
+        <Row className="justify-content-md-center">
+          <Col classname="mb-4" key={movie.id} md={3} >
+            {movies.map((movie) => (
+              <MovieCard
+                movie={movie}
+                onMovieClick={(newSelectedMovie) => {
+                  setSelectedMovie(newSelectedMovie);
+                }}
+              />
+            ))}
+          </Col>
+          <Col>
+            <button onClick={() => {
+              setUser(null);
+              setToken(null);
+              localStorage.clear();
+              }}>
+                Logout
+            </button>
+          </Col>
+        </Row>
+      </Container>
+  );
+>>>>>>> Stashed changes
 };
