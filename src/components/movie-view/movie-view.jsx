@@ -1,3 +1,9 @@
+<<<<<<< Updated upstream
+=======
+import React from "react";
+import "./movie-view.scss";
+
+>>>>>>> Stashed changes
 export const MovieView = ({ movie, onBackClick }) => {
   return (
     <div>
