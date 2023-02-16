@@ -6,16 +6,15 @@ export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
-    // this prevents the default behavior of the form which is to reload the entire page
-    event.preventDefault();
+  const handleSubmit = (e) => {
+      e.preventDefault();
     
-    const data = {
-      Username: username,
-      Password: password
-    };
+  const data = {
+    Username: username,
+    Password: password
+  };
 
-    fetch("https://myflixdb-202302.herokuapp.com/login", {
+    fetch(`https://myflixdb-202302.herokuapp.com/login${user.Username}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -69,8 +68,10 @@ export const LoginView = ({ onLoggedIn }) => {
                           placeholder="Please enter your password"
                         />
                     </Form.Group>
-                    <Button variant="primary" type="submit">
-                      Submit
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      >Submit
                     </Button>
                   </Form>
               </Card.Body>    
