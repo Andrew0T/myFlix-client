@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar} from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 export const NavView = ({ user, onLoggedOut }) => {
@@ -9,8 +9,10 @@ export const NavView = ({ user, onLoggedOut }) => {
         <Navbar.Brand as={Link} to="/">
           myFlix App
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+        <Navbar.Toggle
+          aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse
+          id="basic-navbar-nav">
           <Nav className="me-auto">
             {!user && (
               <>
@@ -27,7 +29,17 @@ export const NavView = ({ user, onLoggedOut }) => {
                 <Nav.Link as={Link} to="/">
                   Home
                 </Nav.Link>
-                <Nav.Link onClick={onLoggedOut}>Logout</Nav.Link>
+                <Nav.Link as={Link} to="/users/:Username"> 
+                  Edit Profile
+                </Nav.Link>
+                <Nav.Link as={Link}
+                      to="/users/:Username/movies"
+                      style={{ textDecoration: 'none'}}>
+                  Favorite Movies
+                </Nav.Link>
+                <Nav.Link onClick={onLoggedOut}>
+                  Logout
+                </Nav.Link>               
               </>
             )}
           </Nav>
