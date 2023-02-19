@@ -1,12 +1,42 @@
-import React, { useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
-import { MovieCard } from '../movie-card/movie-card';
+import React, { useState } from "react";
+import { Button, Col, Row,} from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-export const FavoriteMovies = ({ movies, user }) => {
-  const [user, setUser] = useState(user ? user : null);
-  let favoriteMovies = movies.filter( m =>
-    user.FavoriteMovies.includes(m.id)
-  );
+export const FavoriteMovies = ({}) => {
+  const [user, setUser] = useState();
+  
+  let favoriteMovies = movies.filter(m => user.FavoriteMovies.includes(m._id));
+
+  const addMovie = () => {
+    if (!token) return;
+
+    fetch(`https://myflixdb-202302.herokuapp.com/movies`, {        
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` },
+        }    )
+        .then((response) => {
+            alert('Movie has been added to Favorite Movies');
+            return response.json(), console.log(response);
+        })
+        .catch((error) => {
+            alert('Something went wrong' + error);
+        });
+};
+
+const deleteMovie = () => {
+  if (!token) return;
+  fetch(`https://myflixdb-202302.herokuapp.com/movies`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+          alert('Movie has been deleted');
+          return response.json(), console.log(response);
+      })
+      .catch((error) => {
+          alert('Something went wrong' + error);
+      });
+};
 
   return (
     <Row>
@@ -30,6 +60,22 @@ export const FavoriteMovies = ({ movies, user }) => {
           ))}
         </>
       )}
+      <Link>
+        <Button 
+          className="add-to-favorite"
+          variant="warning"
+          onClick={addMovie}
+        > Add to Favorites
+        </Button>
+      </Link>
+      <Link>
+        <Button 
+          className="remove-from-favorite"
+          variant="warning"
+          onClick={deleteMovie}
+        > Remove from Favorites
+        </Button>
+      </Link>
     </Row>
   );
 };
