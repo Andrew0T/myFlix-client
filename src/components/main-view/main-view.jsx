@@ -1,14 +1,17 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-import { MovieCard } from "../movie-card/movie-card";
-import { MovieView } from "../movie-view/movie-view";
-import { LoginView } from "../login-view/login-view";
-import { SignupView } from "../signup-view/signup-view";
-import { NavView } from "../nav-view/nav-view";
-import { ProfileView } from "../profile-view/profile-view";
+import {MovieCard} from "../movie-card/movie-card";
+import {MovieView} from "../movie-view/movie-view";
+import {LoginView} from "../login-view/login-view";
+import {SignupView} from "../signup-view/signup-view";
+import {NavView} from "../nav-view/nav-view";
+import {ProfileView} from "../profile-view/profile-view";
+import {FavoriteMovies} from "../profile-view/favorite-movies";
+// import {DirectorView} from "../director-view/director-view";
+// import {GenreView} from "../genre-view/genre-view";
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -16,20 +19,54 @@ export const MainView = () => {
   const [user, setUser] = useState(storedUser? storedUser : null);
   const [token, setToken] = useState(storedToken? storedToken : null);
   const [movies, setMovies] = useState([]);
+  // const [directors, setDirectors] = useState([]);
+  // const [genres, setGenres] = useState([]);
 
-  useEffect(() => {
-    if (!token) {
-      return;
-    }
- 
-    fetch(`https://myflixdb-202302.herokuapp.com/movies`, {
+    useEffect(() => {
+    if (!token) return;
+
+    fetch("https://myflixdb-202302.herokuapp.com/movies", {
+      method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => response.json())
       .then((movies) => {
         setMovies(movies);
+        // setDirectors(directors);
+        // setGenres(genres);
       });
   }, [token]);
+
+  const addFavoriteMovie = () => {
+    if (!token) return;
+
+    fetch(`https://myflixdb-202302.herokuapp.com/users/:Username/movie`, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+            alert('Movie has been added to Favorite Movies');
+            return response.json(), console.log(response);
+        })
+        .catch((error) => {
+            alert('Something went wrong' + error);
+        });
+};
+
+  const deleteMovie = () => {
+    if (!token) return;
+    fetch(`https://myflixdb-202302.herokuapp.com/users/:Username/movie`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+            alert('Movie has been deleted');
+            return response.json(), console.log(response);
+        })
+        .catch((error) => {
+            alert('Something went wrong' + error);
+        });
+};
 
     return (
       <BrowserRouter>
@@ -41,7 +78,6 @@ export const MainView = () => {
             localStorage.clear();
           }}
         />
-
         <Container>
           <Row className="justify-content-md-center">
             <Routes>
@@ -59,7 +95,6 @@ export const MainView = () => {
                 </>
               }
               />
-
               <Route
                 path="/login"
                 element={
@@ -72,14 +107,12 @@ export const MainView = () => {
                       onLoggedIn={(user, token) => {
                         setUser(user);
                         setToken(token);
-                        }}
-                      />
+                        }}/>
                     </Col>
                   )}
                 </>
                 }
-              />
-              
+              />              
               <Route
                 path="/movies/:MovieId"
                 element={
@@ -91,9 +124,10 @@ export const MainView = () => {
                   ) : (
                     <Col md={8}>
                       <MovieView
-                       keys={movies.id} 
-                       movies={movies}                       
-                      />
+                       movies={movies}
+                       keys={movies.id}
+                       addFavoriteMovie={addFavoriteMovie}
+                       />
                     </Col>
                   )}
                 </>
@@ -111,9 +145,10 @@ export const MainView = () => {
                     <>
                       {movies.map((movie) => (
                         <Col 
-                          className="mb-5"
+                          className="mb-4" 
                           key={movie.id}
-                          md={3}>
+                          md={3}
+                          >
                           <MovieCard movie={movie} />
                         </Col>
                       ))}
@@ -121,7 +156,7 @@ export const MainView = () => {
                   )}
                 </>
                 }
-              />
+              />              
               <Route 
                 path="/users/:Username"
                 element={
@@ -132,12 +167,77 @@ export const MainView = () => {
                   <Col>No such user found!</Col>
                 ) : (
                   <Col>
-                      <ProfileView user={user} />
+                      <ProfileView
+                        user={user}
+                        movies={movies}
+                        deleteMovie={deleteMovie}
+                      />
                   </Col>
                 )}
                 </>
                 }
               />
+              <Route
+                path="/users/:Username/Movies"
+                element={
+                <>
+                  {!user ? (
+                    <Navigate to="/login" replace />
+                  ) : movies.length === 0 ? (
+                    <Col>No such user!</Col>
+                  ) : (
+                    <Col md={8}>
+                      <FavoriteMovies
+                       token={token}
+                       user={user}
+                       keys={movies.id} 
+                       movies={movies} 
+                       addFavoriteMovie={addFavoriteMovie}
+                       deleteMovie={deleteMovie}                    
+                      />
+                    </Col>
+                  )}
+                </>
+                }
+              />
+              {/* <Route
+                path="/directors/:Name"
+                element={
+                <>
+                  {!user ? (
+                    <Navigate to="/login" replace />
+                  ) : movies.length === 0 ? (
+                    <Col>The list is empty!</Col>
+                  ) : (
+                    <Col md={8}>
+                      <DirectorView
+                       keys={movies/directors.id} 
+                       movies={directors}                       
+                      />
+                    </Col>
+                  )}
+                </>
+                }
+              />
+              <Route
+                path="/movies/genres:Name"
+                element={
+                <>
+                  {!user ? (
+                    <Navigate to="/login" replace />
+                  ) : movies.length === 0 ? (
+                    <Col>The list is empty!</Col>
+                  ) : (
+                    <Col md={8}>
+                      <GenreView
+                       keys={movies/genres.id} 
+                       movies={genres}                       
+                      />
+                    </Col>
+                  )}
+                </>
+                }
+              /> */}
             </Routes>
           </Row>
       </Container>
