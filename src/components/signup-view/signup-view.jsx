@@ -3,13 +3,13 @@ import { useState } from "react";
 import {Button, Form, Card, CardGroup, Container, Row, Col} from "react-bootstrap";
 
 export const SignupView = () => {
-  const [username, setUsername] = useState ("user.Username");
+  const [username, setUsername] = useState ("");
   const [password, setPassword] = useState ("");
-  const [email, setEmail] = useState ("user.Email");
+  const [email, setEmail] = useState ("");
   const [birthday, setBirthday] = useState ("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
     const data = {
       Username: username,
@@ -18,7 +18,7 @@ export const SignupView = () => {
       Birthday: birthday
     };
 
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${user.Username}`, {
+    fetch(`https://myflixdb-202302.herokuapp.com/users/`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -61,8 +61,8 @@ export const SignupView = () => {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           required
-                          minLength="8"
-                          placeholder="Your password must have 8 or more characters"
+                          minLength="6"
+                          placeholder="Your password must have 6 or more characters"
                         />
                     </Form.Group>
                     <Form.Group controlId="formEmail">
