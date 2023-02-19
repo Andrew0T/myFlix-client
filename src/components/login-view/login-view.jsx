@@ -14,7 +14,7 @@ export const LoginView = ({ onLoggedIn }) => {
     Password: password
   };
 
-    fetch(`https://myflixdb-202302.herokuapp.com/login${user.Username}`, {
+    fetch(`https://myflixdb-202302.herokuapp.com/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -64,7 +64,7 @@ export const LoginView = ({ onLoggedIn }) => {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           required
-                          minLength="8"
+                          minLength="6"
                           placeholder="Please enter your password"
                         />
                     </Form.Group>
