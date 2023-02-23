@@ -11,23 +11,22 @@ export const ProfileView = ({}) => {
   const [password, setPassword] = useState ("");
   const [email, setEmail] = useState ("");
   const [birthday, setBirthday] = useState ("");
-  const [favoriteMovies, setFavoriteMovies] = useState ("");
+  const [favoriteMovies, setFavoriteMovies] = useState("");
 
   const data = {
-    Username: username,
+    Username: name,
     Password: password,
     Email: email,
     Birthday: birthday
-  };
-
+};
   const handleSubmit = (e) => {
     e.preventDefault();
     }
   const handleUpdate = (e) => {
     e.preventDefault();
-   }
-
-  fetch(`https://myflixdb-202302.herokuapp.com/users/:Username`, {
+  }
+ 
+  fetch(`https://myflixdb-202302.herokuapp.com/users/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
