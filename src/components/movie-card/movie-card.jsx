@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-export const MovieCard = ({ movie }) => {
-  
+export const MovieCard = ({ movies }) => {
+  const { movieId } = useParams();
+  const movie = movies.find((movie) => movie._id === movieId);
+
   return (
     <Card classname="h-100">
       <Card.Img 
@@ -13,8 +15,6 @@ export const MovieCard = ({ movie }) => {
       />
       <Card.Body>
         <Card.Title>{movie.Title}</Card.Title>
-        {/* <Card.Text>{movie.Description}</Card.Text>
-        <Card.Text>{movie.Year}</Card.Text> */}
         <Link to={`/movies`}>
           <Button variant="primary">Info</Button>
         </Link>
