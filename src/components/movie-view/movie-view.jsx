@@ -1,17 +1,16 @@
 import React from "react";
-import { useParams } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import "./movie-view.scss";
 
 export const MovieView = ({ movies }) => {
   const { movieId } = useParams();
-  const movie = movies.find((m) => m.id === movieId);
+  const movie = movies.find((m) => m._id === movieId);
 
   const addMovie = () => {
     if (!token) return;
 
-    fetch(`https://myflixdb-202302.herokuapp.com/users/:Username/movie`, {
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${storedUser.Username}/movie/${movie._id}`, {
             method: 'POST',
             headers: { Authorization: `Bearer ${token}` },
         }
