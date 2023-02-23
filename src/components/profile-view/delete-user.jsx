@@ -14,10 +14,11 @@ export const DeleteUser = ({ deleteUser }) => {
     Password: password
   };
 
-    fetch(`https://myflixdb-202302.herokuapp.com/user/:Username`, {
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${storedUser.Username}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json"
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${storedToken}`
       },
       body: JSON.stringify(data)
     })
