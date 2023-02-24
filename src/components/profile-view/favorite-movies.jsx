@@ -1,33 +1,35 @@
 import React, { useState } from "react";
 import { Button, Col, Row,} from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { MovieCard } from "../movie-card/movie-card";
 
-export const FavoriteMovies = ({}) => {
-  const [user, setUser] = useState();
-  
-  let favoriteMovies = movies.filter(m => user.FavoriteMovies.includes(m._id));
+export const FavoriteMovies = ({ movies }) => {
+  const [user, setUser] = useState([]);
+  let favoriteMovies = movies.filter(movie => user.FavoriteMovies.includes(movie._id));
 
-  const addMovie = () => {
-    if (!token) return;
-
-    fetch(`https://myflixdb-202302.herokuapp.com/movies`, {        
+  const addFavoriteMovie = () => {
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movies/${movies}`, {        
             method: 'POST',
-            headers: { Authorization: `Bearer ${token}` },
-        }    )
+            headers: { 
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}` 
+            }
+        })
         .then((response) => {
             alert('Movie has been added to Favorite Movies');
             return response.json(), console.log(response);
         })
         .catch((error) => {
             alert('Something went wrong' + error);
-        });
-};
+        })
+    };
 
 const deleteMovie = () => {
-  if (!token) return;
-  fetch(`https://myflixdb-202302.herokuapp.com/movies`, {
+  fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movies/${movies}`, {
           method: 'DELETE',
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}` }
       })
       .then((response) => {
           alert('Movie has been deleted');
@@ -35,20 +37,21 @@ const deleteMovie = () => {
       })
       .catch((error) => {
           alert('Something went wrong' + error);
-      });
-};
+      })
+    };
 
   return (
     <Row>
       {favoriteMovies.length === 0 ? (
-        <Col>The list of favorite movies is empty</Col>
+        <Col>Your list of favorite movies is empty</Col>
       ) : (
         <>
-          <div className='text-start h2 mb-4'>List of favorite movies</div>
+          <div className='text-start h2 mb-4'>Your list of favorite movies</div>
           {favoriteMovies.map((movie) => (
             <Col className='mb-5' key={movie.id} xs={12} sm={6} md={4} lg={3}>
               <MovieCard
-                movieData={movie}
+                keys={movie._id}
+                movie={movie}
                 user={user}
                 updateUserOnFav={(user) => {
                   console.log('Update User called', user);
@@ -60,22 +63,22 @@ const deleteMovie = () => {
           ))}
         </>
       )}
-      <Link>
+      <Link to={`/movies/${movies._id}`}>
         <Button 
           className="add-to-favorite"
           variant="warning"
-          onClick={addMovie}
+          onClick={addFavoriteMovie}
         > Add to Favorites
         </Button>
-      </Link>
-      <Link>
+        </Link>
+        <Link to={`/movies/${movies._id}`}>
         <Button 
           className="remove-from-favorite"
-          variant="warning"
+          variant="danger"
           onClick={deleteMovie}
         > Remove from Favorites
         </Button>
-      </Link>
+        </Link>
     </Row>
   );
 };
