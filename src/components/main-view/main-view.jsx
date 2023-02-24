@@ -10,8 +10,8 @@ import {SignupView} from "../signup-view/signup-view";
 import {NavView} from "../nav-view/nav-view";
 import {ProfileView} from "../profile-view/profile-view";
 import {FavoriteMovies} from "../profile-view/favorite-movies";
-// import {DirectorView} from "../director-view/director-view";
-// import {GenreView} from "../genre-view/genre-view";
+import {DirectorView} from "../director-view/director-view";
+import {GenreView} from "../genre-view/genre-view";
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -19,21 +19,44 @@ export const MainView = () => {
   const [user, setUser] = useState(storedUser? storedUser : null);
   const [token, setToken] = useState(storedToken? storedToken : null);
   const [movies, setMovies] = useState([]);
-  // const [directors, setDirectors] = useState([]);
-  // const [genres, setGenres] = useState([]);
+  const [directors, setDirectors] = useState([]);
+  const [genres, setGenres] = useState([]);
 
     useEffect(() => {
     if (!token) return;
 
     fetch("https://myflixdb-202302.herokuapp.com/movies", {
       method: 'GET',
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}` }
     })
       .then((response) => response.json())
       .then((movies) => {
+        // const moviesFromApi = data.map((movie) => {
+        //   return {
+        //     movie: movie._id,
+        //     title: movie.Title,
+        //     description: movie.Description,
+        //     image: movie.ImagePath,
+        //     genre: {
+        //       name: movie.Genre.Name,
+        //       description: movie.Genre.Description,
+        //     },
+        //     director: {
+        //       name: movie.Director.Name,
+        //       bio: movie.Director.Bio,
+        //       birth: movie.Director.Birth,
+        //       death: movie.Director.Death,
+        //     },
+        //   };
+        // });
         setMovies(movies);
-        // setDirectors(directors);
-        // setGenres(genres);
+        setDirectors(movies/directors);
+        setGenres(movies/genres);
+      // })
+      // .catch((error) => {
+      //   console.log(error);
       });
   }, [token]);
 
@@ -146,10 +169,12 @@ export const MainView = () => {
                       {movies.map((movie) => (
                         <Col 
                           className="mb-4" 
-                          key={movie.id}
+                          keys={movies._id}
                           md={3}
                           >
-                          <MovieCard movie={movie} />
+                          <MovieCard
+                          movie={movie}
+                          />
                         </Col>
                       ))}
                     </>
@@ -170,7 +195,7 @@ export const MainView = () => {
                       <ProfileView
                         user={user}
                         movies={movies}
-                        deleteMovie={deleteMovie}
+                        keys={movies.id}
                       />
                   </Col>
                 )}
@@ -200,7 +225,7 @@ export const MainView = () => {
                 </>
                 }
               />
-              {/* <Route
+              <Route
                 path="/directors/:Name"
                 element={
                 <>
@@ -211,8 +236,10 @@ export const MainView = () => {
                   ) : (
                     <Col md={8}>
                       <DirectorView
-                       keys={movies/directors.id} 
-                       movies={directors}                       
+                        token={token}
+                        user={user}
+                        keys={movies.id} 
+                        movies={movies/directors}                       
                       />
                     </Col>
                   )}
@@ -230,14 +257,16 @@ export const MainView = () => {
                   ) : (
                     <Col md={8}>
                       <GenreView
-                       keys={movies/genres.id} 
-                       movies={genres}                       
+                        token={token}
+                        user={user}
+                        keys={movies.id} 
+                        movies={movies/genres}                       
                       />
                     </Col>
                   )}
                 </>
                 }
-              /> */}
+              />
             </Routes>
           </Row>
       </Container>
