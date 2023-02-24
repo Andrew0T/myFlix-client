@@ -2,41 +2,34 @@ import React from "react";
 import { useState } from "react";
 import {Button, Card, CardGroup, Col, Container, Form, Row} from "react-bootstrap";
 
-export const DeleteUser = ({ deleteUser }) => {
+export const DeleteUser = ({}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleUpdate = (e) => {
-      e.preventDefault();
-    
   const data = {
     Username: username,
-    Password: password
+    Password: password,
   };
 
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${storedUser.Username}`, {
+  const deleteUser = (e) => {
+    e.preventDefault();
+
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${user.Username}`, {
       method: "DELETE",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${storedToken}`
+          Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Login response: ", data);
-        if (data.user) {
-          localStorage.setItem("user", JSON.stringify(data.user));
-          localStorage.setItem("token", data.token);
-          deleteUser(data.user, data.token);
-        } else {
-          alert("User successfully deleted. See you next time.");
-        }
-      })
-      .catch((e) => {
-        alert("Something went wrong");
-      });
-  }
+    .then((response) => {
+      alert('User was successful deleted. Sorry to see you go.');
+      return response.json(), console.log(response);
+  })
+  .catch((error) => {
+      alert('Sorry, something went wrong' + error);
+  });
+  };
 
   return (
     <Container>
@@ -46,7 +39,7 @@ export const DeleteUser = ({ deleteUser }) => {
             <Card>
               <Card.Body>
                 <Card.Title>Please Login</Card.Title>
-                  <Form onSubmit={handleUpdate}>
+                  <Form onSubmit={deleteUser}>
                     <Form.Group controlId="formUsername">
                       <Form.Label>Username:</Form.Label>
                         <Form.Control
@@ -69,8 +62,9 @@ export const DeleteUser = ({ deleteUser }) => {
                           placeholder="Please enter your password"
                         />
                     </Form.Group>
-                    <Button variant="danger" type="submit">
-                      Delete User
+                    <Button
+                      onClick={deleteUser} variant="danger" type="submit">
+                      Delete user
                     </Button>
                   </Form>
               </Card.Body>    
