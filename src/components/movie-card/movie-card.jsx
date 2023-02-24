@@ -1,22 +1,20 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-export const MovieCard = ({ movies }) => {
-  const { movieId } = useParams();
-  const movie = movies.find((movie) => movie._id === movieId);
-
+export const MovieCard = ({ movie }) => {
+  
   return (
-    <Card classname="h-100">
+    <Card className="h-100">
       <Card.Img 
         variant="top"
         src={movie.ImagePath}
       />
-      <Card.Body>
+      <Card.Body className="flex-column">
         <Card.Title>{movie.Title}</Card.Title>
         <Link to={`/movies`}>
-          <Button variant="primary">Info</Button>
+          <Button variant="primary">Open</Button>
         </Link>
       </Card.Body>      
     </Card>
@@ -26,5 +24,8 @@ export const MovieCard = ({ movies }) => {
 MovieCard.propTypes = {
   movie: PropTypes.shape({
     Title: PropTypes.string.isRequired,
+    Description: PropTypes.string.isRequired,
+    Year: PropTypes.string.isRequired,
+    ImagePath: PropTypes.string.isRequired
   }).isRequired,
 };
