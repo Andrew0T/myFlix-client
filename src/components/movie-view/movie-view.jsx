@@ -5,16 +5,17 @@ import "./movie-view.scss";
 
 export const MovieView = ({ movies }) => {
   const { movieId } = useParams();
-  const movie = movies.find((m) => m._id === movieId);
+  const movie = movies.find((movie) => movie._id === movieId);
 
-  const addMovie = () => {
+  const addFavoriteMovie = () => {
     if (!token) return;
 
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${storedUser.Username}/movie/${movie._id}`, {
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${user.Username}/movie/${movie._id}`, {
             method: 'POST',
-            headers: { Authorization: `Bearer ${token}` },
-        }
-    )
+            headers: { 
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}` },
+        })
         .then((response) => {
             alert('Movie has been added to Favorite Movies');
             return response.json(), console.log(response);
@@ -22,7 +23,7 @@ export const MovieView = ({ movies }) => {
         .catch((error) => {
             alert('Something went wrong' + error);
         });
-};
+      };
   
   return (
     <Container className="content">
@@ -50,7 +51,7 @@ export const MovieView = ({ movies }) => {
           <Link>
             <Button
               variant="secondary"
-              onClick={addMovie}
+              onClick={addFavoriteMovie}
             > Add to Favorites
             </Button>
           </Link>  
