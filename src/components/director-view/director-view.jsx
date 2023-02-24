@@ -2,9 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "./director-view.scss";
 
-//export const DirectorView = ({ onBackClick }) => {
+export const DirectorView = ({ onBackClick }) => {
 
   return (
     <Container className="content">
@@ -36,9 +35,8 @@ import "./director-view.scss";
             className="button-director-view"
             variant="secondary"
             onClick={() => { onBackClick();
-            }}
-            >
-              Back
+            }}>
+            Back
             </Button>
           </Link>
         </Card>
@@ -51,12 +49,11 @@ import "./director-view.scss";
 };
  
 DirectorView.propTypes = {
-  movies: PropTypes.array.isRequired,
+  movie: PropTypes.array.isRequired,
   director: PropTypes.shape({
     Name: PropTypes.string.isRequired,
     Bio: PropTypes.string.isRequired,
     Birth: PropTypes.string.isRequired,
-    Death: PropTypes.string.isRequired,
+    Death: PropTypes.string.isRequired
   }).isRequired,
-  onBackClick: PropTypes.func.isRequired,
 };
