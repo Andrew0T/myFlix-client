@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "./genre-view.scss";
 
 export const GenreView = ({ genre, onBackClick }) => {
 
@@ -41,10 +40,9 @@ export const GenreView = ({ genre, onBackClick }) => {
 };
  
 GenreView.propTypes = {
-  movies: PropTypes.array.isRequired,
+  movie: PropTypes.array.isRequired,
   genre: PropTypes.shape({
     Name: PropTypes.string.isRequired,
-    Description: PropTypes.string.isRequired,
+    Description: PropTypes.string.isRequired
   }).isRequired,
-  onBackClick: PropTypes.func.isRequired,
 };
