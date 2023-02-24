@@ -18,7 +18,7 @@ export const SignupView = () => {
       Birthday: birthday
     };
 
-    fetch(`https://myflixdb-202302.herokuapp.com/users/`, {
+    fetch(`https://myflixdb-202302.herokuapp.com/users`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -70,7 +70,7 @@ export const SignupView = () => {
                         <Form.Control
                           type="email"
                           value={email}
-                          onChange={(e) => setEmail (e.target.value)}
+                          onChange={(e) => setEmail(e.target.value)}
                           required
                           placeholder="Please enter your email address"
                         />
@@ -80,7 +80,7 @@ export const SignupView = () => {
                         <Form.Control
                           type="date"
                           value={birthday}
-                          onChange={(e) => setBirthday (e.target.value)}
+                          onChange={(e) => setBirthday(e.target.value)}
                           required
                           placeholder="Please enter your birth date"
                         />
