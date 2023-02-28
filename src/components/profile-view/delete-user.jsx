@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import {Button, Card, CardGroup, Col, Container, Form, Row} from "react-bootstrap";
 
-export const DeleteUser = ({}) => {
+export const DeleteUser = ({ token}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,16 +14,16 @@ export const DeleteUser = ({}) => {
   const deleteUser = (e) => {
     e.preventDefault();
 
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${user.Username}`, {
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${username}`, {
       method: "DELETE",
-      headers: {
+      headers: { 
         "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}` 
       },
       body: JSON.stringify(data),
     })
     .then((response) => {
-      alert('User was successful deleted. Sorry to see you go.');
+      alert('User account was successful deleted. Sorry to see you go.');
       return response.json(), console.log(response);
   })
   .catch((error) => {
@@ -63,7 +63,9 @@ export const DeleteUser = ({}) => {
                         />
                     </Form.Group>
                     <Button
-                      onClick={deleteUser} variant="danger" type="submit">
+                      onClick={deleteUser}
+                      variant="danger"
+                      type="submit">
                       Delete user
                     </Button>
                   </Form>
