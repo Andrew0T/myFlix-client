@@ -20,10 +20,10 @@ export const SignupView = () => {
 
     fetch(`https://myflixdb-202302.herokuapp.com/users`, {
       method: "POST",
-      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json"
-      }
+      },
+      body: JSON.stringify(data),
     }).then((response) => {
       if (response.ok) {
         alert("Signup successful");
