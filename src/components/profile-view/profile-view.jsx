@@ -11,9 +11,9 @@ export const ProfileView = ({}) => {
   return (
     <Row>
       <UserInfo username={UserInfo}/>
-      <UpdateUser handleUpdate={UpdateUser} />
+      <UpdateUser handleUpdate={UpdateUser}/>
       <DeleteUser handleUpdate={DeleteUser}/>
-      <FavoriteMovies favoriteMovies={FavoriteMovies} />
+      <FavoriteMovies favoriteMovies={FavoriteMovies}/>
     </Row>
   );
 };
