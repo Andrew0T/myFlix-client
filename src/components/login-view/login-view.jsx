@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import {Button, Card, CardGroup, Col, Container, Form, Row} from "react-bootstrap";
 
-export const LoginView = ({ onLoggedIn }) => {
+export const LoginView = ({ onLoggedIn, user, token }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -29,7 +29,7 @@ export const LoginView = ({ onLoggedIn }) => {
           localStorage.setItem("token", data.token);
           onLoggedIn(data.user, data.token);
         } else {
-          alert("No such user");
+          alert("Sorry, no such user. Please try again.");
         }
       })
       .catch((e) => {
