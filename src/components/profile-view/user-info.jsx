@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-export const UserInfo = ({ Username, Email }) => {
+export const UserInfo = ({ user, email }) => {
   
   return (
     <Row>
@@ -9,11 +9,11 @@ export const UserInfo = ({ Username, Email }) => {
         <h2>User Info</h2>  
         <div>
         <span>Username: </span>
-        <span>{Username}</span>
+        <span>{user}</span>
         </div>
         <div>
-        <span>Email: </span>/
-        <span>{Email}</span>
+        <span>Email: </span>
+        <span>{email}</span>
         </div>
       </Col>
     </Row>
