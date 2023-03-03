@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-export const DirectorView = ({ movie, director, onBackClick }) => {
+export const DirectorView = ({ director, onBackClick }) => {
 
   return (
     <Container className="content">
@@ -28,14 +28,14 @@ export const DirectorView = ({ movie, director, onBackClick }) => {
               <span>{director.Death}</span>
               </div>
               <Card.Body className="flex-column">
-              <Card.Title>{director}</Card.Title>
-              <Link to={`/movies/directors/${movie._id}`}>
+              <Card.Title>{movie.director}</Card.Title>
+              <Link to={`/movies/directors/${director._id}`}>
                 <Button 
                   variant="primary">
                     Open
                 </Button>
               </Link>
-              <Link to={`/movies/directors/${movie._id}`}>
+              <Link to={`/movies/${movie._id}`}>
                 <Button
                 variant="secondary"
                 onClick={() => { onBackClick();
