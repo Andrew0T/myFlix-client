@@ -1,9 +1,11 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import "./movie-view.scss";
 
-export const MovieView = ({ movies, user, token }) => {
+export const BookView = ({ user, token }) => {
+  const movies = useSelector((state) => state.movies.list);
   const { movieId } = useParams();
   const movie = movies.find((movie) => movie._id === movieId);
 
