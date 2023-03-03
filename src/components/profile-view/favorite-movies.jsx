@@ -1,16 +1,19 @@
 import React, { useCallback } from "react";
+import { useSelector} from "react-redux";
 import { Button, Col, Container, Row,} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
+import { MoviesFilter } from "../movies-filter/movies-filter";
 
-export const FavoriteMovies = ({ movies, user, token }) => {
+export const FavoriteMovies = ({ movie, user, token }) => {
+  const movies = useSelector((state) => state.movies.list);
   const favoriteMovies = useCallback(()=>{movies.filter((movie) => user.favoriteMovies.includes(movie.id))},[movies]);
 
   const addFavoriteMovie = () => {
     if (!token) {
       return;
     }
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movies/${movies.id}`, {        
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movies/${movie._id}`, {        
             method: 'POST',
             headers: { 
               "Content-Type": "application/json",
@@ -30,7 +33,7 @@ export const FavoriteMovies = ({ movies, user, token }) => {
     if (!token) {
       return;
     }
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movies/${movies.id}`, {
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movies/${movie._id}`, {
             method: 'DELETE',
             headers: { 
               "Content-Type": "application/json",
@@ -47,6 +50,9 @@ export const FavoriteMovies = ({ movies, user, token }) => {
 
   return (
     <Container className="content">
+        <Row>
+          <MoviesFilter />
+        </Row>
         <Row>
           {favoriteMovies.length === 0 ? (
             <Col>Your list of favorite movies is empty</Col>
