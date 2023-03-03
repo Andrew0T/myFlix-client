@@ -2,31 +2,29 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
-import {MovieCard} from "../movie-card/movie-card";
-import {MovieView} from "../movie-view/movie-view";
-import {LoginView} from "../login-view/login-view";
-import {SignupView} from "../signup-view/signup-view";
-import {NavView} from "../nav-view/nav-view";
-import {ProfileView} from "../profile-view/profile-view";
-import {FavoriteMovies} from "../profile-view/favorite-movies";
-import {DirectorView} from "../director-view/director-view";
-import {GenreView} from "../genre-view/genre-view";
+import { MoviesList } from "../movies-list/movies-list";
+import { MovieView } from "../movie-view/movie-view";
+import { LoginView } from "../login-view/login-view";
+import { SignupView } from "../signup-view/signup-view";
+import { NavView } from "../nav-view/nav-view";
+import { ProfileView } from "../profile-view/profile-view";
+import { FavoriteMovies } from "../profile-view/favorite-movies";
+import { setMovies } from "../../redux/reducers/movies";
 
 export const MainView = () => {
+  const movies = useSelector((state) => state.movies.list);
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
-  const [movies, setMovies] = useState([]);
-  const [directors, setDirectors] = useState([]);
-  const [genres, setGenres] = useState([]);
+  const dispatch = useDispatch();
 
     useEffect(() => {
     if (!token) {
       return;
     }
-
     fetch("https://myflixdb-202302.herokuapp.com/movies", {
       method: 'GET',
       headers: {
@@ -35,14 +33,12 @@ export const MainView = () => {
     })
       .then((response) => response.json())
       .then((movies) => {
-         setMovies(movies);
-         setDirectors(directors);
-         setGenres(genres);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [token]);
+          dispatch(setMovies(movies));
+       })
+       .catch((error) => {
+         console.log(error);
+       });
+   }, [token]);
   
     return (
       <BrowserRouter>
@@ -100,12 +96,7 @@ export const MainView = () => {
                     <Col>The list is empty!</Col>
                   ) : (
                     <Col md={6}>
-                      <MovieView
-                       token={token}
-                       user={user}
-                       key={movies._id}
-                       movies={movies}
-                       />
+                      <MovieView />
                     </Col>
                   )}
                 </>
@@ -115,30 +106,13 @@ export const MainView = () => {
                 path="/"
                 element={
                 <>
-                  {!user ? (
-                    <Navigate to="/login" replace />
-                  ) : movies.length === 0 ? (
-                    <Col>The list is empty!</Col>
-                  ) : (
-                    <>
-                      {movies.map((movie) => (
-                        <Col 
-                          className="mb-5"
-                          key={movie._id}
-                          md={3}
-                          >
-                          <MovieCard
-                          token={token}
-                          user={user}
-                          movie={movie}
-                          />
-                        </Col>
-                      ))}
-                    </>
-                  )}
+                  {!user ? 
+                  <Navigate to="/login" replace />:
+                  <MoviesList />
+                  }
                 </>
                 }
-              />              
+              />
               <Route 
                 path="/users/:Username"
                 element={
@@ -171,52 +145,6 @@ export const MainView = () => {
                       <FavoriteMovies
                        token={token}
                        user={user}
-                       key={movies._id}
-                       movies={movies}
-                      />
-                    </Col>
-                  )}
-                </>
-                }
-              />
-              <Route
-                path="/movies/directors"
-                element={
-                <>
-                  {!user ? (
-                    <Navigate to="/login" replace />
-                  ) : movies.length === 0 ? (
-                    <Col>The list is empty!</Col>
-                  ) : (
-                    <Col md={4}>
-                      <DirectorView
-                        token={token}
-                        user={user}
-                        key={movies._id}
-                        movies={movies}
-                        directors={directors}
-                      />
-                    </Col>
-                  )}
-                </>
-                }
-              />
-              <Route
-                path="/movies/genres"
-                element={
-                <>
-                  {!user ? (
-                    <Navigate to="/login" replace />
-                  ) : movies.length === 0 ? (
-                    <Col>The list is empty!</Col>
-                  ) : (
-                    <Col md={4}>
-                      <GenreView
-                        token={token}
-                        user={user}
-                        key={movies._id}
-                        movies={movies}
-                        genres={genres}
                       />
                     </Col>
                   )}
