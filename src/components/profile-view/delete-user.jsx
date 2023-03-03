@@ -2,40 +2,34 @@ import React from "react";
 import { useState } from "react";
 import {Button, Card, CardGroup, Col, Container, Form, Row} from "react-bootstrap";
 
-export const LoginView = ({ onLoggedIn, user, token }) => {
+export const DeleteUser = ({ token}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
-      e.preventDefault();
-    
   const data = {
     Username: username,
-    Password: password
+    Password: password,
   };
 
-    fetch(`https://myflixdb-202302.herokuapp.com/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
+  const deleteUser = (e) => {
+    e.preventDefault();
+
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${username}`, {
+      method: "DELETE",
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}` 
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Login response: ", data);
-        if (data.user) {
-          localStorage.setItem("user", JSON.stringify(data.user));
-          localStorage.setItem("token", data.token);
-          onLoggedIn(data.user, data.token);
-        } else {
-          alert("Sorry, no such user. Please try again.");
-        }
-      })
-      .catch((e) => {
-        alert("Something went wrong");
-      });
-  }
+    .then((response) => {
+      alert('User account was successful deleted. Sorry to see you go.');
+      return response.json(), console.log(response);
+  })
+  .catch((error) => {
+      alert('Sorry, something went wrong' + error);
+  });
+  };
 
   return (
     <Container>
@@ -45,7 +39,7 @@ export const LoginView = ({ onLoggedIn, user, token }) => {
             <Card>
               <Card.Body>
                 <Card.Title>Please Login</Card.Title>
-                  <Form onSubmit={handleSubmit}>
+                  <Form onSubmit={deleteUser}>
                     <Form.Group controlId="formUsername">
                       <Form.Label>Username:</Form.Label>
                         <Form.Control
@@ -69,9 +63,10 @@ export const LoginView = ({ onLoggedIn, user, token }) => {
                         />
                     </Form.Group>
                     <Button
-                      variant="primary"
-                      type="submit"
-                      >Submit
+                      onClick={deleteUser}
+                      variant="danger"
+                      type="submit">
+                      Delete user
                     </Button>
                   </Form>
               </Card.Body>    
