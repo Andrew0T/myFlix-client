@@ -1,51 +1,32 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { Button, Card } from "react-bootstrap";
 
-export const GenreView = ({ genre, onBackClick }) => {
-
+export const GenreView = ({ movies }) => {
+  const { movie_Id } = useParams();
+  const movie = movies.find((m) => m._id === movie_Id);
+  
   return (
-    <Container className="content">
-    <Row>
-      <Col>
-      <Card.Header>{genre}</Card.Header>
-        <Card>
-          <div>
-          <span>Genre: </span>
-          <span>{genre.Name}</span>
-          </div>
-          <div>
-          <span>Description: </span>
-          <span>{genre.Description}</span>
-          </div>
-          <Card.Body className="flex-column">
-              <Card.Title>{movie.genre}</Card.Title>
-              <Link to={`/movies/genres/${movie._id}`}>
-                <Button 
-                  variant="primary">
-                    Open
-                </Button>
-              </Link>
-              <Link to={`/movies/genres/${movie._id}`}>
-                <Button
-                  variant="secondary"
-                  onClick={() => { onBackClick();
-                  }}>
-                  Back
-                </Button>
-              </Link>
-            </Card.Body>       
-        </Card>
-      </Col>
-    </Row>
-  </Container>
+    <Card>
+      <div>
+        <img className="w-40" src={movie.ImagePath} />
+      </div>
+      <div>
+        <span>Genre: </span>
+        <span>{movie.Genre.Name}</span>
+      </div>
+      <div>
+        <span>Description: </span>
+        <span>{movie.Genre.Description}</span>
+      </div>
+      <Link to={"/"} >
+      <Button 
+        className="back-button"
+        style={{ cursor: "pointer" }}
+        type="reset"
+      >
+        Back
+      </Button>
+      </Link>
+    </Card>
   );
-};
- 
-GenreView.propTypes = {
-  genre: PropTypes.shape({
-    Name: PropTypes.string.isRequired,
-    Description: PropTypes.string.isRequired
-  }).isRequired
 };
