@@ -1,8 +1,7 @@
-import React from "react";
 import { useState } from "react";
 import {Button, Card, Form } from "react-bootstrap";
 
-export const UpdateUser = ({user, token }) => {
+export const UpdateUser = ({ user, token }) => {
   const [username, setUsername] = useState ("");
   const [password, setPassword] = useState ("");
   const [email, setEmail] = useState ("");
@@ -22,12 +21,12 @@ export const UpdateUser = ({user, token }) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        headers: { Authorization: `Bearer ${token}` }
-      },
+        Authorization: `Bearer ${token}` 
+  },
       body: JSON.stringify(data),
     })
     .then((response) => {
-      alert('Successfully updated user nformation');
+      alert('Successfully updated user information');
       return response.json(), console.log(response);
   })
   .catch((error) => {
