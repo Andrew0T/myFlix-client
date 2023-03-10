@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
 import { MoviesFilter } from "../movies-filter/movies-filter";
 
-export const FavoriteMovies = ({ movie, user, token }) => {
+export const FavoriteMovies = ({ user, token}) => {
   const movies = useSelector((state) => state.movies.list);
   const favoriteMovies = useCallback(()=>{movies.filter((movie) => user.favoriteMovies.includes(movie.id))},[movies]);
 
@@ -13,7 +13,7 @@ export const FavoriteMovies = ({ movie, user, token }) => {
     if (!token) {
       return;
     }
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movies/${movie._id}`, {        
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movies/${movies._id}`, {        
             method: 'POST',
             headers: { 
               "Content-Type": "application/json",
@@ -26,14 +26,14 @@ export const FavoriteMovies = ({ movie, user, token }) => {
         })
         .catch((error) => {
             alert('Something went wrong' + error);
-        })
+        });
     };
 
   const deleteMovie = () => {
     if (!token) {
       return;
     }
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movies/${movie._id}`, {
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movies/${movies._id}`, {
             method: 'DELETE',
             headers: { 
               "Content-Type": "application/json",
@@ -58,9 +58,11 @@ export const FavoriteMovies = ({ movie, user, token }) => {
             <Col>Your list of favorite movies is empty</Col>
           ) : (
             <>
-              <div className='text-start h2 mb-4'>Your list of favorite movies</div>
+              <Col className='text-start h2 mb-4'>
+                Your list of favorite movies
+              </Col>
               {favoriteMovies.map((movie) => (
-                <Col key={movie._id} className='mb-5' xs={12} sm={6} md={4} lg={3}>
+                <Col key={movies._id} className='mb-5' xs={12} sm={6} md={4} lg={3}>
                   <MovieCard
                     movie={movie}
                     user={user}
@@ -76,20 +78,22 @@ export const FavoriteMovies = ({ movie, user, token }) => {
               ))}
             </>
           )}
-          <Link to={`/movies`}>
+          <Link to={`/users/${user}/movies/${movies._id}`}>
             <Button 
               className="add-to-favorite"
               variant="warning"
               onClick={addFavoriteMovie}
-            > Add to Favorites
+            > 
+            Add to Favorites
             </Button>
           </Link>
-          <Link to={`/movies`}>
+          <Link to={`/users/${user}/movies/${movies._id}`}>
             <Button 
               className="remove-from-favorite"
               variant="danger"
               onClick={deleteMovie}
-            > Remove from Favorites
+            > 
+            Remove from Favorites
             </Button>
           </Link>
         </Row>
