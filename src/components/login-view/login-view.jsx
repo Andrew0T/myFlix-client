@@ -1,18 +1,17 @@
-import React from "react";
 import { useState } from "react";
-import {Button, Card, CardGroup, Col, Container, Form, Row} from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
-export const LoginView = ({ onLoggedIn, user, token }) => {
+export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  
   const handleSubmit = (e) => {
-      e.preventDefault();
-    
-  const data = {
-    Username: username,
-    Password: password
-  };
+     e.preventDefault();
+
+    const data = {
+      Username: username,
+      Password: password
+    };
 
     fetch(`https://myflixdb-202302.herokuapp.com/login`, {
       method: "POST",
@@ -35,50 +34,38 @@ export const LoginView = ({ onLoggedIn, user, token }) => {
       .catch((e) => {
         alert("Something went wrong");
       });
-  }
+  };
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <CardGroup>
-            <Card>
-              <Card.Body>
-                <Card.Title>Please Login</Card.Title>
-                  <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="formUsername">
-                      <Form.Label>Username:</Form.Label>
-                        <Form.Control
-                          type="text"
-                          value={username}
-                          onChange={(e) => setUsername(e.target.value)}
-                          required
-                          minLength="3"
-                          placeholder="Please enter your username"
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formPassword">
-                      <Form.Label>Password:</Form.Label>
-                        <Form.Control
-                          type="password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                          minLength="6"
-                          placeholder="Please enter your password"
-                        />
-                    </Form.Group>
-                    <Button
-                      variant="primary"
-                      type="submit"
-                      >Submit
-                    </Button>
-                  </Form>
-              </Card.Body>    
-            </Card>
-          </CardGroup>        
-        </Col>
-      </Row>
-    </Container>
+    <Form onSubmit={handleSubmit}>
+      <Form.Group controlId="formUsername">
+        <Form.Label>Username: </Form.Label>
+        <Form.Control
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          minLength={6}
+          placeholder="Please enter your username"
+        />
+      </Form.Group>
+      <Form.Group controlId="formPassword">
+        <Form.Label>Password: </Form.Label>
+        <Form.Control
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          minLength={6}
+          placeholder="Please enter your password"
+        />
+      </Form.Group>
+      <Button 
+        variant="primary"
+        type="submit"
+      >
+      Login
+      </Button>
+    </Form>
   );
 };
