@@ -3,6 +3,7 @@ import { Container, Nav, Navbar} from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 export const NavView = ({ user, onLoggedOut }) => {
+  
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -26,19 +27,18 @@ export const NavView = ({ user, onLoggedOut }) => {
             )}
             {user && (
               <>
-                <Nav.Link as={Link} to="/">
-                  Home
-                </Nav.Link>
-                <Nav.Link as={Link} to="/users/:Username"> 
-                  Edit Profile
+                <Nav.Link as={Link}
+                 to="/users/:Username"
+                > 
+                Update User Profile
                 </Nav.Link>
                 <Nav.Link as={Link}
-                      to="/users/:Username/movies"
-                      style={{ textDecoration: 'none'}}>
-                  Favorite Movies
+                  to="/users/:Username/movies"
+                >
+                Favorite Movies
                 </Nav.Link>
                 <Nav.Link onClick={onLoggedOut}>
-                  Logout
+                Logout
                 </Nav.Link>               
               </>
             )}
