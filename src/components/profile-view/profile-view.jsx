@@ -1,12 +1,12 @@
-import React from 'react';
-import { Row } from 'react-bootstrap';
+import React from "react";
+import { Row } from "react-bootstrap";
 
-import { UserInfo } from './user-info';
-import { UpdateUser } from './update-user';
-import { DeleteUser } from './delete-user';
-import { FavoriteMovies } from './favorite-movies';
+import { UserInfo } from "./user-info";
+import { UpdateUser } from "./update-user";
+import { DeleteUser } from "./delete-user";
+import { FavoriteMovies } from "./favorite-movies";
 
-export const ProfileView = ({}) => {
+export const ProfileView = () => {
  
   return (
     <Row>
