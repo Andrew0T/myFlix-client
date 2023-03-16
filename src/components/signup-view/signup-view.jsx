@@ -19,15 +19,16 @@ export const SignupView = () => {
 
     fetch(`https://myflixdb-202302.herokuapp.com/users`, {
       method: "POST",
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(data),
+
     })
     .then((response) => {
       if (response.ok) {
         alert("Signup was successful");
-        window.location.reload();
+        window.location.assign("/");
       } else {
         alert("Sorry, Signup failed");
       }
@@ -78,8 +79,11 @@ export const SignupView = () => {
             placeholder="Please enter your birth date"
           />
       </Form.Group>
-      <Button variant="primary" type="submit">
-        Register
+      <Button 
+        variant="primary"
+        type="submit"
+      >
+      Register
       </Button>
     </Form>
   );
