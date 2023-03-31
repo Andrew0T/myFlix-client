@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 
-export const DeleteUser = ({ user, token} ) => {
+export const DeleteUser = ({ token} ) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+     
+  
+  const deleteUser = (e) => {
+    e.preventDefault();
 
   const data = {
     Username: username,
     Password: password
   };
-  
-  const deleteUser = (e) => {
-    e.preventDefault();
 
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${user} `, {
+      fetch(`https://myflixdb-202302.herokuapp.com/users/:Username`, {
+
       method: "DELETE",
+      body: JSON.stringify(data),
       headers: { 
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}` 
       },
-      body: JSON.stringify(data)
     })
     .then((response) => {
       alert('User account was successful deleted. Sorry to see you go.');
@@ -57,10 +59,10 @@ export const DeleteUser = ({ user, token} ) => {
                   placeholder="Please enter your password"
                 />
             </Form.Group>
-            <Button
-              onClick={deleteUser}
+            <Button              
               variant="danger"
               type="submit"
+              onClick={deleteUser}
             >
             Delete user?
             </Button>
