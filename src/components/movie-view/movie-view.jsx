@@ -62,7 +62,7 @@ export const MovieView = ({ user, token }) => {
           Back
         </Button>
       </Link>
-      <Link to={`/users/:Username/movie/${movies._id}`}>
+      <Link to={`/users/${user}/movie/${movies._id}`}>
             <Button 
               className="add-to-favorite"
               variant="warning"
