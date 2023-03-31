@@ -12,7 +12,7 @@ export const ProfileView = () => {
     <Row>
       <UserInfo username={UserInfo}/>
       <UpdateUser handleUpdate={UpdateUser}/>
-      <DeleteUser handleUpdate={DeleteUser}/>
+      <DeleteUser deleteUser={DeleteUser}/>
       <FavoriteMovies favoriteMovies={FavoriteMovies}/>
     </Row>
   );
