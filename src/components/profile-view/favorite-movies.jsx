@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useSelector} from "react-redux";
 import { Button, Col, Container, Row,} from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -6,38 +6,20 @@ import { MovieCard } from "../movie-card/movie-card";
 import { MoviesFilter } from "../movies-filter/movies-filter";
 
 export const FavoriteMovies = ({ user, token}) => {
+  const username = useState("user");
   const movies = useSelector((state) => state.movies.list);
   const favoriteMovies = useCallback(()=>{movies.filter((movie) => user.favoriteMovies.includes(movie.id))},[movies]);
-
-  const addFavoriteMovie = () => {
-    if (!token) {
-      return;
-    }
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movies/${movies._id}`, {        
-            method: 'POST',
-            headers: { 
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}` 
-            }
-        })
-        .then((response) => {
-            alert('Movie has been added to Favorite Movies');
-            return response.json(), console.log(response);
-        })
-        .catch((error) => {
-            alert('Something went wrong' + error);
-        });
-    };
 
   const deleteMovie = () => {
     if (!token) {
       return;
     }
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movies/${movies._id}`, {
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${username}/movies/${movies._id}`, {
             method: 'DELETE',
+            body: JSON.stringify(data),
             headers: { 
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}` }
+              Authorization: `Bearer ${storedtoken}` }
         })
         .then((response) => {
             alert('Movie has been deleted');
@@ -55,11 +37,13 @@ export const FavoriteMovies = ({ user, token}) => {
         </Row>
         <Row>
           {favoriteMovies.length === 0 ? (
-            <Col>Your list of favorite movies is empty</Col>
+            <Col>
+            Your list of favorite movies is empty
+            </Col>
           ) : (
             <>
               <Col className='text-start h2 mb-4'>
-                Your list of favorite movies
+              Your list of favorite movies
               </Col>
               {favoriteMovies.map((movie) => (
                 <Col key={movies._id} className='mb-5' xs={12} sm={6} md={4} lg={3}>
@@ -78,16 +62,7 @@ export const FavoriteMovies = ({ user, token}) => {
               ))}
             </>
           )}
-          <Link to={`/users/${user}/movies/${movies._id}`}>
-            <Button 
-              className="add-to-favorite"
-              variant="warning"
-              onClick={addFavoriteMovie}
-            > 
-            Add to Favorites
-            </Button>
-          </Link>
-          <Link to={`/users/${user}/movies/${movies._id}`}>
+          <Link to={`/users/${username} /movies/${movies._id}`}>
             <Button 
               className="remove-from-favorite"
               variant="danger"
