@@ -1,35 +1,43 @@
 import { useState } from "react";
 import {Button, Card, Form } from "react-bootstrap";
 
-export const UpdateUser = ({ user, token }) => {
+export const UpdateUser = ({ storedtoken }) => {
   const [username, setUsername] = useState ("");
   const [password, setPassword] = useState ("");
   const [email, setEmail] = useState ("");
   const [birthday, setBirthday] = useState ("");
 
-  const data = {
-    Username: username,
-    Password: password,
-    Email: email,
-    Birthday: birthday
-  };
-
   const handleUpdate = (e) => {
     e.preventDefault();
 
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}`, {
+    const data = {
+      Username: username,
+      Password: password,
+      Email: email,
+      Birthday: birthday
+    };
+
+    fetch(`https://myflixdb-202302.herokuapp.com/users/:Username`, {
       method: "PUT",
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}` 
-  },
-      body: JSON.stringify(data),
+        Authorization: `Bearer ${storedtoken}` 
+      }
     })
-    .then((response) => {
+    .then ((response) => response.JSON())
+    .then((data) => {
+      console.log("Login response: ", data);
+      if (data.user) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("token", data.token);
+        onLoggedIn(data.user, data.token);
       alert('Successfully updated user information');
-      return response.json(), console.log(response);
+      window.location.assign("/");
+      }
   })
   .catch((error) => {
+    console.log(error);
       alert('Sorry, something went wrong? Please try again!' + error);
   });
   };
@@ -40,7 +48,7 @@ export const UpdateUser = ({ user, token }) => {
         <Card.Title>Update Profile</Card.Title>
           <Form onSubmit={handleUpdate}>
             <Form.Group controlId="formUsername">
-              <Form.Label>Username:</Form.Label>
+              <Form.Label>Username: </Form.Label>
                 <Form.Control
                   type="text"
                   value={username}
@@ -51,7 +59,7 @@ export const UpdateUser = ({ user, token }) => {
                 />
             </Form.Group>
             <Form.Group controlId="formPassword">
-              <Form.Label>Password:</Form.Label>
+              <Form.Label>Password: </Form.Label>
                 <Form.Control
                   type="password"
                   value={password}
@@ -62,7 +70,7 @@ export const UpdateUser = ({ user, token }) => {
                 />
             </Form.Group>
             <Form.Group controlId="formEmail">
-              <Form.Label>Email:</Form.Label>
+              <Form.Label>Email: </Form.Label>
                 <Form.Control
                   type="email"
                   value={email}
@@ -72,7 +80,7 @@ export const UpdateUser = ({ user, token }) => {
                 />
             </Form.Group>
             <Form.Group controlId="formBirthday">
-              <Form.Label>Birthday:</Form.Label>
+              <Form.Label>Birthday: </Form.Label>
                 <Form.Control
                   type="date"
                   value={birthday}
@@ -81,7 +89,11 @@ export const UpdateUser = ({ user, token }) => {
                   placeholder="Please enter your birth date"
                 />
             </Form.Group>
-            <Button variant="warning" type="submit">
+            <Button 
+              variant="warning"
+              type="submit"
+              onClick={handleUpdate}
+            >
               Update user
             </Button>
         </Form>
