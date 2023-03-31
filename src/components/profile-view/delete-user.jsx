@@ -1,31 +1,28 @@
 import React, { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 
-export const DeleteUser = ({ token} ) => {
+export const DeleteUser = () => {
+  const token = localStorage.getItem("token");
+  const user= JSON.parse(localStorage.getItem("user"));
+  
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-     
   
   const deleteUser = (e) => {
     e.preventDefault();
 
-  const data = {
-    Username: username,
-    Password: password
-  };
-
-      fetch(`https://myflixdb-202302.herokuapp.com/users/:Username`, {
-
+      fetch(`https://myflixdb-202302.herokuapp.com/users/${user.Username}`, {
       method: "DELETE",
-      body: JSON.stringify(data),
       headers: { 
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}` 
       },
     })
-    .then((response) => {
+    .then((response) => response.json())
+    .then((resJSON) => {
       alert('User account was successful deleted. Sorry to see you go.');
-      return response.json(), console.log(response);
+      console.log(resJSON);
+      window.location.assign("/");
     })
     .catch((error) => {
       alert('Sorry, something went wrong' + error);
@@ -38,7 +35,7 @@ export const DeleteUser = ({ token} ) => {
         <Card.Title>Delete User</Card.Title>
           <Form onSubmit={deleteUser}>
             <Form.Group controlId="formUsername">
-              <Form.Label>Username:</Form.Label>
+              <Form.Label>Username: </Form.Label>
                 <Form.Control
                   type="text"
                   value={username}
@@ -49,7 +46,7 @@ export const DeleteUser = ({ token} ) => {
                 />
             </Form.Group>
             <Form.Group controlId="formPassword">
-              <Form.Label>Password:</Form.Label>
+              <Form.Label>Password: </Form.Label>
                 <Form.Control
                   type="password"
                   value={password}
