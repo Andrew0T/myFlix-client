@@ -1,32 +1,54 @@
 import { Link, useParams } from "react-router-dom";
-import { Button, Card } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { Button } from "react-bootstrap";
 import "./movie-view.scss";
 
-export const MovieView = ({ user, token }) => {
-  const movies = useSelector((state) => state.movies.list);
+export const MovieView = ({ movies }) => {
   const { movie_Id } = useParams();
   const movie = movies.find((movie) => movie._id === movie_Id);
 
-  const addFavoriteMovie = () => {
+  const token = localStorage.getItem("token");
+  const user= JSON.parse(localStorage.getItem("user"));
+
+  const addFavorite = () => {
     if (!token) {
       return;
     }
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${user}/movie/${movies._id}`, {        
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${user.Username}/movies/${movie._id}`, {        
             method: 'POST',
             headers: { 
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}` 
             }
         })
-        .then((response) => {
+        .then((response) => response.json())
+        .then((resJSON) => {
             alert('Movie has been added to Favorite Movies');
-            return response.json(), console.log(response);
+            console.log(resJSON);
         })
         .catch((error) => {
             alert('Something went wrong' + error);
-        });
+        })
     };
+
+  const removeFavorite = () => {
+    if (!token) {
+      return;
+    }
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${user.Username}/movies/${movie._id}`, {
+            method: 'DELETE',
+            headers: { 
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}` }
+        })
+        .then((response) => response.json())
+        .then((resJSON) => {
+            alert('Movie has been deleted');
+            console.log(resJSON);
+        })
+        .catch((error) => {
+            alert('Something went wrong' + error);
+        })
+      };
 
   return (
     <div>
@@ -62,15 +84,20 @@ export const MovieView = ({ user, token }) => {
           Back
         </Button>
       </Link>
-      <Link to={`/users/${user}/movie/${movies._id}`}>
-            <Button 
-              className="add-to-favorite"
-              variant="warning"
-              onClick={addFavoriteMovie}
-            > 
-            Add to Favorites
-            </Button>
-          </Link>
+        <Button 
+          className="add-button"
+          variant="warning"
+          onClick={addFavorite}
+        > 
+          Add to Favorites
+        </Button>
+        <Button 
+          className="remove-button"
+          variant="danger"
+          onClick={removeFavorite}
+        > 
+          Delete from Favorites
+        </Button>
     </div>        
   );
 };
