@@ -1,58 +1,48 @@
-import { useState } from "react";
-import {Button, Card, Form } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Card, Form } from "react-bootstrap";
 
-export const UpdateUser = ({ storedtoken }) => {
-  const [username, setUsername] = useState ("");
-  const [password, setPassword] = useState ("");
-  const [email, setEmail] = useState ("");
-  const [birthday, setBirthday] = useState ("");
+export const UpdateUser = () => {
+  const token = localStorage.getItem("token");
+  const user= JSON.parse(localStorage.getItem("user"));
 
-  const handleUpdate = (e) => {
+  const [username, updateUsername] = useState ("");
+  const [password, updatePassword] = useState ("");
+  const [email, updateEmail] = useState ("");
+  const [birthday, updateBirthday] = useState ("");
+  
+  const updateUser = (e) => {
     e.preventDefault();
 
-    const data = {
-      Username: username,
-      Password: password,
-      Email: email,
-      Birthday: birthday
-    };
-
-    fetch(`https://myflixdb-202302.herokuapp.com/users/:Username`, {
+    fetch(`https://myflixdb-202302.herokuapp.com/users/${user.Username}`, {
       method: "PUT",
-      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${storedtoken}` 
+        Authorization: `Bearer ${token}` 
       }
     })
-    .then ((response) => response.JSON())
-    .then((data) => {
-      console.log("Login response: ", data);
-      if (data.user) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("token", data.token);
-        onLoggedIn(data.user, data.token);
+    .then((response) => response.json())
+    .then((resJSON) => {
       alert('Successfully updated user information');
-      window.location.assign("/");
-      }
-  })
-  .catch((error) => {
-    console.log(error);
-      alert('Sorry, something went wrong? Please try again!' + error);
-  });
+      console.log(resJSON);
+      window.location.reload(" ");
+    })
+    .catch((error) => {
+      console.log(error);
+        alert('Sorry, something went wrong? Please try again!' + error);
+    })
   };
 
   return (
     <Card>
       <Card.Body>
         <Card.Title>Update Profile</Card.Title>
-          <Form onSubmit={handleUpdate}>
+          <Form onSubmit={updateUser}>
             <Form.Group controlId="formUsername">
               <Form.Label>Username: </Form.Label>
                 <Form.Control
                   type="text"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => updateUsername(e.target.value)}
                   required
                   minLength="3"
                   placeholder="Please enter a username"
@@ -63,7 +53,7 @@ export const UpdateUser = ({ storedtoken }) => {
                 <Form.Control
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => updatePassword(e.target.value)}
                   required
                   minLength="6"
                   placeholder="Your password must have 6 or more characters"
@@ -74,7 +64,7 @@ export const UpdateUser = ({ storedtoken }) => {
                 <Form.Control
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => updateEmail(e.target.value)}
                   required
                   placeholder="Please enter your email address"
                 />
@@ -84,7 +74,7 @@ export const UpdateUser = ({ storedtoken }) => {
                 <Form.Control
                   type="date"
                   value={birthday}
-                  onChange={(e) => setBirthday(e.target.value)}
+                  onChange={(e) => updateBirthday(e.target.value)}
                   required
                   placeholder="Please enter your birth date"
                 />
@@ -92,7 +82,7 @@ export const UpdateUser = ({ storedtoken }) => {
             <Button 
               variant="warning"
               type="submit"
-              onClick={handleUpdate}
+              onClick={updateUser}
             >
               Update user
             </Button>
