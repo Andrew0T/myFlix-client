@@ -7,7 +7,7 @@ import { MoviesFilter } from "../movies-filter/movies-filter";
 export const FavoriteMovies = ({ movies }) => {
   const token = localStorage.getItem("token");
   const user= JSON.parse(localStorage.getItem("user"));
-  const movie = movies.filter(movie => user.movies.includes(movie._id));
+  const favoritemovies = movies.filter(movie => user.FavoriteMovies.includes(movie._id));
 
   const removeFavorite = () => {
     if (!token) {
@@ -47,10 +47,10 @@ export const FavoriteMovies = ({ movies }) => {
               <Col className='text-start h2 mb-4'>
               Your list of favorite movies
               </Col>
-              {movies.map((movie) => (
+              {favoritemovies.map((movie) => (
                 <Col key={movie._id} className='mb-5' xs={12} sm={6} md={4} lg={3}>
                   <MovieCard
-                    movies={movies}
+                    movie={movie}
                     token={token}
                     user={user}
                   />
