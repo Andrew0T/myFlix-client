@@ -9,26 +9,6 @@ export const FavoriteMovies = ({ movies }) => {
   const user= JSON.parse(localStorage.getItem("user"));
   const favoritemovies = movies.filter(movie => user.FavoriteMovies.includes(movie._id));
 
-  const removeFavorite = () => {
-    if (!token) {
-      return;
-    }
-    fetch(`https://myflixdb-202302.herokuapp.com/users/${user.Username}/movies/${movie._id}`, {
-            method: 'DELETE',
-            headers: { 
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}` }
-        })
-        .then((response) => response.json())
-        .then((resJSON) => {
-            alert('Movie has been deleted');
-            console.log(resJSON);
-        })
-        .catch((error) => {
-            alert('Something went wrong' + error);
-        })
-      };
-
   return (
     <Container className="content">
         <Row>
@@ -50,20 +30,12 @@ export const FavoriteMovies = ({ movies }) => {
               {favoritemovies.map((movie) => (
                 <Col key={movie._id} className='mb-5' xs={12} sm={6} md={4} lg={3}>
                   <MovieCard
-                    movie={movie}
-                    token={token}
-                    user={user}
+                    movies={movies}
                   />
                 </Col>
               ))}
             </>
           )}
-          <Button 
-            variant="danger"
-            onClick={removeFavorite}
-        > 
-          Delete from Favorites
-        </Button>
         </Row>
     </Container>
   );
