@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, Container, Row,} from "react-bootstrap";
+import { Col, Container, Row,} from "react-bootstrap";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { MoviesFilter } from "../movies-filter/movies-filter";
@@ -13,11 +13,7 @@ export const FavoriteMovies = ({ movies }) => {
     <Container className="content">
         <Row>
           <MoviesFilter />
-        </Row>
-        <Row>
           <MovieView />
-        </Row>
-        <Row>
           {movies.length === 0 ? (
             <Col>
             Your list of favorite movies is empty
@@ -31,6 +27,8 @@ export const FavoriteMovies = ({ movies }) => {
                 <Col key={movie._id} className='mb-5' xs={12} sm={6} md={4} lg={3}>
                   <MovieCard
                     movies={movies}
+                    user={user}
+                    token={token}
                   />
                 </Col>
               ))}
