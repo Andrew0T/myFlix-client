@@ -13,18 +13,27 @@ export const UpdateUser = () => {
   const updateUser = (e) => {
     e.preventDefault();
 
+    const data = {
+      Username: username,
+      Password: password,
+      Email: email,
+      Birthday: birthday
+    };
+
     fetch(`https://myflixdb-202302.herokuapp.com/users/${user.Username}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}` 
-      }
+      },
+      body: JSON.stringify(data)
     })
     .then((response) => response.json())
     .then((resJSON) => {
-      alert('Successfully updated user information');
-      console.log(resJSON);
-      window.location.reload(" ");
+      alert('Successfully updated user information, please login with new details');
+      console.log(resJSON.ok);
+      localStorage.clear("token, user");
+      window.location.reload("/");
     })
     .catch((error) => {
       console.log(error);
@@ -44,7 +53,7 @@ export const UpdateUser = () => {
                   value={username}
                   onChange={(e) => updateUsername(e.target.value)}
                   required
-                  minLength="3"
+                  minLength="6"
                   placeholder="Please enter a username"
                 />
             </Form.Group>
@@ -56,7 +65,7 @@ export const UpdateUser = () => {
                   onChange={(e) => updatePassword(e.target.value)}
                   required
                   minLength="6"
-                  placeholder="Your password must have 6 or more characters"
+                  placeholder="Please enter a password with minimum 6 characters"
                 />
             </Form.Group>
             <Form.Group controlId="formEmail">
