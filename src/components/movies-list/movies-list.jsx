@@ -3,8 +3,9 @@ import { MovieCard } from "../movie-card/movie-card";
 import { MoviesFilter } from "../movies-filter/movies-filter";
 import { Col, Row } from "react-bootstrap";
 
-export const MoviesList = () => {
-  const movies = useSelector((state) => state.movies.list);
+export const MoviesList = ({ isFavoriteMovies = false, favoriteMovies = []}) => {
+  const movies = isFavoriteMovies ? 
+  favoriteMovies : useSelector((state) => state.movies.list);
   const filter = useSelector((state) => state.movies.filter).trim().toLowerCase();
   const filteredMovies = movies.filter((movie) => movie.Title.toLowerCase().includes(filter));
 
