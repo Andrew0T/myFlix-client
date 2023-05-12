@@ -4,7 +4,6 @@ import { Row } from "react-bootstrap";
 // import { UserInfo } from "./user-info";
 import { UpdateUser } from "./update-user";
 import { DeleteUser } from "./delete-user";
-// import { FavoriteMovies } from "./favorite-movies";
 
 export const ProfileView = () => {
 
@@ -13,7 +12,7 @@ export const ProfileView = () => {
       {/* <UserInfo username={UserInfo}/> */}
       <UpdateUser handleUpdate={UpdateUser}/>
       <DeleteUser deleteUser={DeleteUser}/>
-      {/* <FavoriteMovies favoriteMovies={FavoriteMovies}/> */}
     </Row>
+
   );
 };
