@@ -33,7 +33,7 @@ export const NavView = ({ user, onLoggedOut }) => {
                 Update User Profile
                 </Nav.Link>
                 <Nav.Link as={Link}
-                  to="/users/:Username/movies"
+                  to="/users/favorites"
                 >
                 Favorite Movies
                 </Nav.Link>
