@@ -12,6 +12,7 @@ import { DirectorView } from "../director-view/director-view";
 import { GenreView } from "../genre-view/genre-view";
 import { ProfileView } from "../profile-view/profile-view";
 import { setMovies } from "../../redux/reducers/movies";
+import { FavoriteMovies } from "../profile-view/favorite-movies";
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -167,6 +168,18 @@ export const MainView = () => {
                       />
                   </Col>
                 )}
+                </>
+                }
+              />
+              <Route
+                path="/users/favorites"
+                element={
+                <>
+                {!user ? 
+                  <Navigate to="/login" replace />:
+                  <FavoriteMovies
+                        movies={movies}
+                  />}
                 </>
                 }
               />
