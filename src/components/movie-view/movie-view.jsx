@@ -24,7 +24,6 @@ export const MovieView = ({ movies }) => {
         .then((resJSON) => {
             alert('Movie has been added to Favorite Movies');
             console.log(resJSON);
-            window.location.reload();
         })
         .catch((error) => {
             alert('Something went wrong' + error);
@@ -45,7 +44,6 @@ export const MovieView = ({ movies }) => {
         .then((resJSON) => {
             alert('Movie has been deleted');
             console.log(resJSON);
-            window.location.reload();
         })
         .catch((error) => {
             alert('Something went wrong' + error);
